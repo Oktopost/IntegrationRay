@@ -1,9 +1,9 @@
 {
-	"name": "oktopost/int-engine",
+	"name": "oktopost/integration-ray",
     "description": "Integration tests engine",
 	"type": "library",
 	"license": "MIT",
-	"homepage": "https://github.com/Oktopost/IntEngine",
+	"homepage": "https://github.com/Oktopost/IntegrationRay",
 	"authors":
 	[
 		{
@@ -17,7 +17,7 @@
 	{
 		"psr-4": 
 		{
-			"IntEngine\\": "Source/"
+			"IntegrationRay\\": "Source/"
 		}
 	},
 	"require": 
