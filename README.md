@@ -1,4 +1,3 @@
-# SeTaco
+# IntegrationRay
 
-
-Wrapper for the package facebook/webdriver
+Integration test framework for PHP
