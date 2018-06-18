@@ -48,9 +48,31 @@ class IntegrationTestCase extends UnitestCase
 				try
 				{
 					$isFound = true;
-					$res = $skeleton->get((string)$type);
-					
-					return $res;
+					return $skeleton->get((string)$type);
+				}
+				catch (ImplementerNotDefinedException $e)
+				{
+					$isFound = false;
+					return null;
+				}
+			});
+		
+		$narrator->params()
+			->addCallback(function (\ReflectionParameter $param, bool &$isFound)
+				use ($skeleton)
+			{
+				$class = $param->getClass();
+				
+				if (!$class || $class->isInterface() || !$class->isInstantiable())
+				{
+					$isFound = false;
+					return null;
+				}
+				
+				try
+				{
+					$isFound = true;
+					return $skeleton->load($class->getName());
 					
 				}
 				catch (ImplementerNotDefinedException $e)
