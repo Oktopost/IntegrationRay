@@ -6,7 +6,7 @@ use Narrator\Narrator;
 use Skeleton\Exceptions\ImplementerNotDefinedException;
 use IntegrationRay\TestScope;
 
-use Unitest\Wrappers\PHPUnit\UnitestCase;
+use CosmicRay\Wrappers\PHPUnit\UnitestCase;
 
 
 class IntegrationTestCase extends UnitestCase
