@@ -66,6 +66,7 @@ class SessionSetupInvoker
 	public function __construct(ISessionSetup $setup, INarrator $narrator)
 	{
 		$this->setup = $setup;
+		$this->narrator = $narrator;
 	}
 	
 	
@@ -101,7 +102,7 @@ class SessionSetupInvoker
 		$narrator = clone $this->narrator;
 		$narrator->params()->atPosition(0, $className);
 		
-		$this->invoke($narrator, __FUNCTION__);
+		$this->invoke(__FUNCTION__, $narrator);
 	}
 	
 	public function setup($instance, string $method): void
@@ -110,7 +111,7 @@ class SessionSetupInvoker
 		$narrator->params()->addCallback($this->returnTestSuitCallback($instance));
 		$narrator->params()->addCallback($this->returnTestCaseCallback(new \ReflectionMethod($instance, $method)));
 		
-		$this->invoke($narrator, __FUNCTION__);
+		$this->invoke(__FUNCTION__, $narrator);
 	}
 	
 	public function cleanUp($instance, string $method): void
@@ -119,7 +120,7 @@ class SessionSetupInvoker
 		$narrator->params()->addCallback($this->returnTestSuitCallback($instance));
 		$narrator->params()->addCallback($this->returnTestCaseCallback(new \ReflectionMethod($instance, $method)));
 		
-		$this->invoke($narrator, __FUNCTION__);
+		$this->invoke(__FUNCTION__, $narrator);
 	}
 	
 	public function cleanUpTestSuite(string $className): void
@@ -127,7 +128,7 @@ class SessionSetupInvoker
 		$narrator = clone $this->narrator;
 		$narrator->params()->atPosition(0, $className);
 		
-		$this->invoke($narrator, __FUNCTION__);
+		$this->invoke(__FUNCTION__, $narrator);
 	}
 	
 	

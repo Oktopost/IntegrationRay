@@ -3,6 +3,8 @@ namespace IntegrationRay\Config;
 
 
 use Narrator\INarrator;
+
+use IntegrationRay\IElementsPlugin;
 use IntegrationRay\TestSession\ISessionLoader;
 
 
@@ -19,6 +21,14 @@ abstract class AbstractTestScopeConfig implements ITestScopeConfig
 	}
 	
 	public function getAdditionalConfigDirectories(): array
+	{
+		return [];
+	}
+	
+	/**
+	 * @return string[]|IElementsPlugin[]
+	 */
+	public function getPlugins(): array
 	{
 		return [];
 	}

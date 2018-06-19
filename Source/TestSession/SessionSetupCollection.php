@@ -31,7 +31,7 @@ class SessionSetupCollection
 		$loaded		= new Set();
 		$sessions	= [];
 		
-		while ($toLoad)
+		while (!$toLoad->isEmpty())
 		{
 			$butch = clone $toLoad;
 			
@@ -43,7 +43,9 @@ class SessionSetupCollection
 				if (!$dependencies || $loaded->hasAll($dependencies))
 				{
 					$sessions[] = $session;
+					
 					$loaded->add($value);
+					$toLoad->rem($value);
 				}
 				else
 				{
@@ -51,7 +53,7 @@ class SessionSetupCollection
 				}
 			}
 			
-			if ($butch->count() == $toLoad->count() && $butch->hasAll($toLoad))
+			if (!$butch->isEmpty() && $butch->count() == $toLoad->count() && $butch->hasAll($toLoad))
 			{
 				throw new FatalEngineException('Recursive dependency detected in one of: ' . 
 					implode(', ', $toLoad->toArray()));

@@ -2,7 +2,6 @@
 namespace IntegrationRay;
 
 
-use Annotation\Value;
 use IntegrationRay\Config\ITestScopeConfig;
 use IntegrationRay\TestSession\HomepageSessionSetup;
 use IntegrationRay\TestSession\ISessionSetup;
@@ -10,6 +9,8 @@ use IntegrationRay\TestSession\SessionLoader;
 use IntegrationRay\TestSession\SessionSetupCollection;
 use IntegrationRay\TestSession\SessionSetupInvoker;
 use IntegrationRay\Utils\BrowserSetupSessionDecorator;
+
+use Annotation\Value;
 
 use Narrator\Narrator;
 use Narrator\INarrator;
@@ -236,8 +237,12 @@ class TestScope implements ITestManager
 		$this->skeleton->load($this->sessionConfig);
 		
 		$this->loadSessionSetups();
+		
+		foreach ($this->sessionConfig->getPlugins() as $plugin)
+		{
+			$this->register($plugin);
+		}
 	}
-	
 	
 	public function getSession(): ISession
 	{

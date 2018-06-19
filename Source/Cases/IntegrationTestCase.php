@@ -44,6 +44,7 @@ class IntegrationTestCase extends UnitestCase
 		self::getTestManager()->cleanUpTestCase($this, $this->getName());
 	}
 	
+	
 	public static function setUpBeforeClass()
 	{
 		parent::tearDownAfterClass();
