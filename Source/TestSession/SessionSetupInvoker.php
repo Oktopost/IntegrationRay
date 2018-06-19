@@ -30,7 +30,7 @@ class SessionSetupInvoker
 			function(\ReflectionParameter $parameter, bool &$isFound)
 				use ($instance) 
 			{
-				if ($parameter->name != 'testSuite')
+				if ($parameter->getType() != 'string' || $parameter->name != 'testClass')
 				{
 					$isFound = false;
 					return null;
@@ -78,7 +78,7 @@ class SessionSetupInvoker
 		return $this->invoke(__FUNCTION__, $narrator) ?: $original;
 	}
 	
-	public function openSession(): void
+	public function setupSession(): void
 	{
 		$this->invoke(__FUNCTION__);
 	}
@@ -91,42 +91,48 @@ class SessionSetupInvoker
 		$this->invoke(__FUNCTION__, $narrator);
 	}
 	
-	public function closeSession(): void
+	public function cleanUpSession(): void
 	{
 		$this->invoke(__FUNCTION__);
 	}
 	
-	public function setUpTestSuite($instance): void
+	public function setupTestSuite(string $className): void
 	{
 		$narrator = clone $this->narrator;
-		$narrator->params()->addCallback($this->returnTestSuitCallback($instance));
+		$narrator->params()->atPosition(0, $className);
 		
 		$this->invoke($narrator, __FUNCTION__);
 	}
 	
-	public function setUp($instance, \ReflectionMethod $testCase): void
+	public function setup($instance, string $method): void
 	{
 		$narrator = clone $this->narrator;
 		$narrator->params()->addCallback($this->returnTestSuitCallback($instance));
-		$narrator->params()->addCallback($this->returnTestCaseCallback($testCase));
+		$narrator->params()->addCallback($this->returnTestCaseCallback(new \ReflectionMethod($instance, $method)));
 		
 		$this->invoke($narrator, __FUNCTION__);
 	}
 	
-	public function tearDown($instance, \ReflectionMethod $testCase): void
+	public function cleanUp($instance, string $method): void
 	{
 		$narrator = clone $this->narrator;
 		$narrator->params()->addCallback($this->returnTestSuitCallback($instance));
-		$narrator->params()->addCallback($this->returnTestCaseCallback($testCase));
+		$narrator->params()->addCallback($this->returnTestCaseCallback(new \ReflectionMethod($instance, $method)));
 		
 		$this->invoke($narrator, __FUNCTION__);
 	}
 	
-	public function cleanUpTestSuite($instance): void
+	public function cleanUpTestSuite(string $className): void
 	{
 		$narrator = clone $this->narrator;
-		$narrator->params()->addCallback($this->returnTestSuitCallback($instance));
+		$narrator->params()->atPosition(0, $className);
 		
 		$this->invoke($narrator, __FUNCTION__);
+	}
+	
+	
+	public static function create(ISessionSetup $setup, INarrator $narrator): SessionSetupInvoker
+	{
+		return new self($setup, $narrator);
 	}
 }

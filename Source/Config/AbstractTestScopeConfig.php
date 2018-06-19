@@ -17,4 +17,9 @@ abstract class AbstractTestScopeConfig implements ITestScopeConfig
 	{
 		
 	}
+	
+	public function getAdditionalConfigDirectories(): array
+	{
+		return [];
+	}
 }

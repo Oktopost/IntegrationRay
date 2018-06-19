@@ -10,4 +10,6 @@ interface ITestScopeConfig
 {
 	public function setupNarrator(INarrator $narrator): INarrator;
 	public function setupSessions(ISessionLoader $loader): void;
+	public function getConfigDirectory(): string;
+	public function getAdditionalConfigDirectories(): array;
 }

@@ -40,6 +40,13 @@ trait TAutoloadBrowser
 	public function __invoke(IBrowser $browser)
 	{
 		$this->_browser = $browser;
+		
+		if (is_callable('parent::__invoke'))
+		{
+			/** @noinspection PhpUndefinedClassInspection */
+			parent::__invoke($browser);
+		}
+		
 		return $this;
 	}
 }

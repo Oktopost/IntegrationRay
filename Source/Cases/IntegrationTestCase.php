@@ -3,87 +3,56 @@ namespace IntegrationRay\Cases;
 
 
 use Narrator\Narrator;
-use Skeleton\Exceptions\ImplementerNotDefinedException;
-use IntegrationRay\TestScope;
-
 use CosmicRay\Wrappers\PHPUnit\UnitestCase;
+
+use IntegrationRay\TestScope;
+use IntegrationRay\ITestManager;
 
 
 class IntegrationTestCase extends UnitestCase
 {
+	private $narrator;
+	
+	
+	protected static function getTestManager(): ITestManager
+	{
+		return TestScope::instance();
+	}
+	
+	
+	protected function getNarrator(): Narrator
+	{
+		if ($this->narrator)
+			return $this->narrator;
+		
+		$this->narrator = clone self::getTestManager()->getNarrator();
+		$this->narrator = $this->setupNarrator($this->narrator);
+		
+		return $this->narrator;
+	}
+	
+	
 	protected function setUp()
 	{
-		/*
-		if (!TestScope::instance()->getSession()->hasCurrent())
-		{
-			$browser = TestScope::instance()->getSession()->openBrowser();
-			$browser->goto('');
-		}
-		*/
+		parent::setUp();
+		self::getTestManager()->setupTestCase($this, $this->getName());
 	}
 	
 	protected function tearDown()
 	{
-		TestScope::instance()->getSession()->clear();
+		parent::tearDown();
+		self::getTestManager()->cleanUpTestCase($this, $this->getName());
 	}
 	
-	
-	protected function setupNarrator(Narrator $narrator): Narrator
+	public static function setUpBeforeClass()
 	{
-		$scope = TestScope::instance();
-		$skeleton = $scope->getSkeleton();
-		
-		$narrator->params()
-			->addCallback(function (\ReflectionParameter $param, bool &$isFound)
-				use ($skeleton)
-			{
-				$isFound = false;
-				
-				$type = $param->getType();
-				
-				if (is_null($type) || 
-					(!class_exists((string)$type) && !interface_exists((string)$type)))
-				{
-					return null;
-				}
-				
-				try
-				{
-					$isFound = true;
-					return $skeleton->get((string)$type);
-				}
-				catch (ImplementerNotDefinedException $e)
-				{
-					$isFound = false;
-					return null;
-				}
-			});
-		
-		$narrator->params()
-			->addCallback(function (\ReflectionParameter $param, bool &$isFound)
-				use ($skeleton)
-			{
-				$class = $param->getClass();
-				
-				if (!$class || $class->isInterface() || !$class->isInstantiable())
-				{
-					$isFound = false;
-					return null;
-				}
-				
-				try
-				{
-					$isFound = true;
-					return $skeleton->load($class->getName());
-					
-				}
-				catch (ImplementerNotDefinedException $e)
-				{
-					$isFound = false;
-					return null;
-				}
-			});
-		
-		return parent::setupNarrator($narrator);
+		parent::tearDownAfterClass();
+		self::getTestManager()->setupTestSuite(static::class);
+	}
+	
+	public static function tearDownAfterClass()
+	{
+		parent::tearDownAfterClass();
+		self::getTestManager()->cleanUpTestSuite(static::class);
 	}
 }
