@@ -13,11 +13,13 @@ class IntegrationTestCase extends UnitestCase
 {
 	protected function setUp()
 	{
+		/*
 		if (!TestScope::instance()->getSession()->hasCurrent())
 		{
 			$browser = TestScope::instance()->getSession()->openBrowser();
 			$browser->goto('');
 		}
+		*/
 	}
 	
 	protected function tearDown()

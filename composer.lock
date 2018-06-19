@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "be5ca4a695219d3dbd8e628dd187f765",
+    "content-hash": "fd5dabd2efa815fba88f24526258bf1d",
     "packages": [
         {
             "name": "facebook/webdriver",

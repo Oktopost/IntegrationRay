@@ -27,7 +27,9 @@
 		"unstable-cacao/traitor": "^1.0",
 		"oktopost/skeleton": "^1.1",
 		"oktopost/pofig": "^1.0",
-		"unstable-cacao/structura": "^1.0"
+		"unstable-cacao/structura": "^1.0",
+		"oktopost/annotation": "^1.0",
+		"unstable-cacao/itarator": "^1.0"
 	},
 	"require-dev":
 	{

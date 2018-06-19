@@ -47,8 +47,20 @@ class TestScope
 		$skeleton->set(EngineConfig::class,	$this->config);
 		$skeleton->set(ISession::class,		$this->session);
 		
-		$skeleton->set(IBrowser::class,			function () { return $this->session->current(); });
 		$skeleton->set(IBrowserAssert::class,	function () { return $this->session->assert(); });
+		
+		$skeleton->set(
+			IBrowser::class,	
+			function ()
+			{
+				if (!$this->session->hasCurrent())
+				{
+					$this->session->openBrowser();
+					$this->session->current()->goto('');
+				}
+					
+				return $this->session->current(); 
+			});
 		
 		$dir = join(DIRECTORY_SEPARATOR, [$this->configDirectory, 'config/skeleton']);
 			

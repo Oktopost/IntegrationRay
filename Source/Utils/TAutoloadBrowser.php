@@ -20,7 +20,14 @@ trait TAutoloadBrowser
 	private function browser(): IBrowser
 	{
 		if ($this->_browser)
+		{
 			return $this->_browser;
+		}
+		else if (!$this->_session->hasCurrent())
+		{
+			$browser = $this->_session->openBrowser();
+			$browser->goto('');
+		}
 		
 		return $this->_session->current();
 	}
