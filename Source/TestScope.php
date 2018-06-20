@@ -21,8 +21,9 @@ use SeTaco\ISession;
 use SeTaco\DriverConfig;
 use SeTaco\IBrowserAssert;
 
-use Skeleton\Exceptions\ImplementerNotDefinedException;
 use Skeleton\Skeleton;
+use Skeleton\Base\ISkeletonSource;
+use Skeleton\Exceptions\ImplementerNotDefinedException;
 use Skeleton\ConfigLoader\DirectoryConfigLoader;
 
 use IntegrationRay\Utils\SkeletonConfigLoaderCollection;
@@ -114,10 +115,6 @@ class TestScope implements ITestManager
 				$setup->setupSession();
 			}
 		}
-		else
-		{
-			$this->createNarrator();
-		}
 		
 		$this->currentGroup = $group;
 	}
@@ -185,9 +182,11 @@ class TestScope implements ITestManager
 		$this->skeleton
 			->enableKnot()
 			->useGlobal()
+			->set(ISkeletonSource::class,	$this->skeleton)
 			->set(TestScope::class,			$this)
 			->set(EngineConfig::class,		$this->config)
 			->set(ISession::class,			$this->session)
+			->set(DriverConfig::class,		$this->session->config())
 			->set(IBrowserAssert::class,	$this->session->assert())
 			->set(IBrowser::class,	
 				function ()
@@ -213,6 +212,7 @@ class TestScope implements ITestManager
 	 */
 	public function __construct($configObject)
 	{
+		$this->skeletonLoader = new SkeletonConfigLoaderCollection();
 		$this->sessionConfig = is_string($configObject) ? new $configObject : $configObject;
 		
 		$this->config = new EngineConfig(
@@ -293,6 +293,11 @@ class TestScope implements ITestManager
 		if ($this->currentGroup !== $group)
 		{
 			$this->switchGroup($group);
+		}
+		
+		if (!$this->narrator)
+		{
+			$this->createNarrator();
 		}
 		
 		foreach ($this->foreachSessionInvoker() as $setup)

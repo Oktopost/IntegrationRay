@@ -28,6 +28,27 @@ class IntegrationTestCase extends UnitestCase
 		$this->narrator = clone self::getTestManager()->getNarrator();
 		$this->narrator = $this->setupNarrator($this->narrator);
 		
+		$this->narrator->params()
+			->addCallback(function (\ReflectionParameter $param, bool &$isFound)
+			{
+				$isFound = false;
+				
+				$class = $param->getClass();
+				
+				if ($class && $class->isInstantiable()) 
+				{
+					$obj = TestScope::instance()->getSkeleton()->load($class->getName());
+					$isFound = true;
+					
+					return $obj;
+				}
+				else
+				{
+					$isFound = false;
+					return null;
+				}
+			});
+		
 		return $this->narrator;
 	}
 	
