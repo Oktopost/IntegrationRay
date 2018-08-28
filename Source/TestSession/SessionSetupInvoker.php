@@ -74,7 +74,7 @@ class SessionSetupInvoker
 	{
 		$original = clone $this->narrator;
 		$narrator = clone $this->narrator;
-		$narrator->params()->atPosition(0, $original);
+		$narrator->params()->atPosition(0, function() use ($original) { return $original; });
 		
 		return $this->invoke(__FUNCTION__, $narrator) ?: $original;
 	}
