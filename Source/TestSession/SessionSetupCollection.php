@@ -13,10 +13,22 @@ class SessionSetupCollection
 	
 	private function getSessionOnly(string $name): ISessionSetup
 	{
-		if (!isset($this->setupObjects[$name]))
-			throw new FatalEngineException("Session config named '{$name}' not found");
+		if (isset($this->setupObjects[$name]))
+		{
+			return $this->setupObjects[$name];
+		}
 		
-		return $this->setupObjects[$name];
+		if (class_exists($name))
+		{
+			$object = new $name();
+			
+			if ($object instanceof ISessionSetup)
+			{
+				return $object;
+			}
+		}
+			
+		throw new FatalEngineException("Session config named '{$name}' not found");
 	}
 	
 	
