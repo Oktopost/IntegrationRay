@@ -194,7 +194,11 @@ class TestScope implements ITestManager
 					if (!$this->session->hasCurrent())
 					{
 						$this->session->openBrowser();
-						$this->session->current()->goto('');
+						
+						if ($this->session->config()->Homepage->URL)
+						{
+							$this->session->current()->goto('');
+						}
 					}
 						
 					return $this->session->current(); 
