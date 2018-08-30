@@ -282,16 +282,16 @@
         },
         {
             "name": "oktopost/se-taco",
-            "version": "1.0.2",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Oktopost/SeTaco.git",
-                "reference": "90e46ae38f70e3f556965ba220acf14b0013f0a4"
+                "reference": "3da738983e75202d3ca33508ee7c4e07c7748424"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Oktopost/SeTaco/zipball/90e46ae38f70e3f556965ba220acf14b0013f0a4",
-                "reference": "90e46ae38f70e3f556965ba220acf14b0013f0a4",
+                "url": "https://api.github.com/repos/Oktopost/SeTaco/zipball/3da738983e75202d3ca33508ee7c4e07c7748424",
+                "reference": "3da738983e75202d3ca33508ee7c4e07c7748424",
                 "shasum": ""
             },
             "require": {
@@ -325,7 +325,7 @@
             ],
             "description": "Wrapper for the package facebook/webdriver",
             "homepage": "https://github.com/Oktopost/SeTaco",
-            "time": "2018-06-11T10:37:50+00:00"
+            "time": "2018-08-30T05:18:00+00:00"
         },
         {
             "name": "oktopost/skeleton",

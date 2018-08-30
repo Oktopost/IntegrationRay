@@ -58,4 +58,9 @@ class BrowserSetupSessionDecorator implements ISession
 	{
 		return $this->child->assert();
 	}
+	
+	public function closeUnusedBrowsers(): void
+	{
+		$this->child->closeUnusedBrowsers();
+	}
 }
