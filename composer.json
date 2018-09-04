@@ -29,7 +29,8 @@
 		"oktopost/pofig": "^1.0",
 		"unstable-cacao/structura": "^1.0",
 		"oktopost/annotation": "^1.0",
-		"unstable-cacao/itarator": "^1.0"
+		"unstable-cacao/itarator": "^1.0",
+		"oktopost/squid": "^1.1"
 	},
 	"require-dev":
 	{

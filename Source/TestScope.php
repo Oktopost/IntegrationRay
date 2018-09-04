@@ -3,6 +3,7 @@ namespace IntegrationRay;
 
 
 use IntegrationRay\Config\ITestScopeConfig;
+use IntegrationRay\Config\MySQLConfigLoader;
 use IntegrationRay\TestSession\HomepageSessionSetup;
 use IntegrationRay\TestSession\ISessionSetup;
 use IntegrationRay\TestSession\SessionLoader;
@@ -29,12 +30,18 @@ use Skeleton\ConfigLoader\DirectoryConfigLoader;
 use IntegrationRay\Utils\SkeletonConfigLoaderCollection;
 use IntegrationRay\Plugins\IWithSkeleton;
 
+use Squid\MySql;
+use Squid\MySql\IMySqlConnector;
+
 
 class TestScope implements ITestManager
 {
 	/** @var TestScope|null */
 	private static $instance = null;
 	
+	
+	/** @var MySql */
+	private $mysql;
 	
 	/** @var string|null */
 	private $currentGroup = null;
@@ -223,6 +230,9 @@ class TestScope implements ITestManager
 			$this->sessionConfig->getConfigDirectory(), 
 			$this->sessionConfig->getAdditionalConfigDirectories()
 		);
+		
+		$this->mysql = new MySql();
+		$this->mysql->config()->addLoader(new MySQLConfigLoader($this->config));
 	}
 	
 	
@@ -343,5 +353,10 @@ class TestScope implements ITestManager
 	public static function instance(): TestScope
 	{
 		return self::$instance;
+	}
+	
+	public static function mysql(string $conn = 'main'): IMySqlConnector
+	{
+		return self::instance()->mysql->getConnector($conn);
 	}
 }
